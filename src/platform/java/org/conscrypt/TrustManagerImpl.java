@@ -638,7 +638,6 @@ public final class TrustManagerImpl extends X509ExtendedTrustManager {
         return sortedAnchors;
     }
 
-
     /**
      * Comparator for sorting {@link TrustAnchor}s using a {@link CertificateComparator}.
      */

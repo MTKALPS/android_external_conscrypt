@@ -101,6 +101,10 @@ public class OpenSSLContextImpl extends SSLContextSpi {
                 serverSessionContext, algorithms);
     }
 
+    public void setEnableOcspStapling(boolean flag) {
+        sslParameters.setEnableOCSPStapling(flag);
+    }
+
     @Override
     public SSLSocketFactory engineGetSocketFactory() {
         if (sslParameters == null) {

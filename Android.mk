@@ -1,3 +1,8 @@
+#
+# Copyright (C) 2014 MediaTek Inc.
+# Modification based on code covered by the mentioned copyright
+# and/or permission notice(s).
+#
 # -*- mode: makefile -*-
 # Copyright (C) 2013 The Android Open Source Project
 #
@@ -85,6 +90,22 @@ LOCAL_REQUIRED_MODULES := libjavacrypto
 LOCAL_ADDITIONAL_DEPENDENCIES := $(LOCAL_PATH)/Android.mk
 LOCAL_JAVA_LANGUAGE_VERSION := 1.7
 include $(BUILD_JAVA_LIBRARY)
+
+ifeq ($(strip $(BUILD_MTK_API_DEP)), yes)
+# conscrypt API table.
+# ============================================================
+LOCAL_MODULE := conscrypt-api
+
+LOCAL_JAVA_LIBRARIES += $(LOCAL_STATIC_JAVA_LIBRARIES)
+LOCAL_MODULE_CLASS := JAVA_LIBRARIES
+
+LOCAL_DROIDDOC_OPTIONS:= \
+		-api $(TARGET_OUT_COMMON_INTERMEDIATES)/PACKAGING/conscrypt-api.txt \
+		-nodocs \
+		-hidden
+
+include $(BUILD_DROIDDOC)
+endif
 
 # Create the conscrypt library without jarjar for tests
 include $(CLEAR_VARS)

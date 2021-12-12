@@ -101,6 +101,8 @@ public class SSLParametersImpl implements Cloneable {
     private boolean want_client_auth = false;
     // if the peer with this parameters allowed to cteate new SSL session
     private boolean enable_session_creation = true;
+    // if enabling OCSP-stapling
+    private boolean enable_certificate_status_request = false;
     // Endpoint identification algorithm (e.g., HTTPS)
     private String endpointIdentificationAlgorithm;
     // Whether to use the local cipher suites order
@@ -362,6 +364,21 @@ public class SSLParametersImpl implements Cloneable {
      */
     protected boolean getEnableSessionCreation() {
         return enable_session_creation;
+    }
+
+
+    /**
+     * Allows/disallows OCSP stapling
+     */
+    protected void setEnableOCSPStapling(boolean flag) {
+        enable_certificate_status_request = flag;
+    }
+
+    /**
+     * Returns the value indicating if enabling OCSP stapling
+     */
+    protected boolean getEnableOCSPStapling() {
+        return enable_certificate_status_request;
     }
 
     /**

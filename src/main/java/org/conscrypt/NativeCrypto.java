@@ -1065,6 +1065,8 @@ public final class NativeCrypto {
     public static native void SSL_set_tlsext_host_name(long sslNativePointer, String hostname)
             throws SSLException;
     public static native String SSL_get_servername(long sslNativePointer);
+    public static native void SSL_set_tlsext_set_certificate_request_status_enabled(
+            long sslNativePointer, boolean requestEnabled) throws SSLException;
 
     /**
      * Enables NPN for all SSL connections in the context.

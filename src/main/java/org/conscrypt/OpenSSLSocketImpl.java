@@ -1,4 +1,9 @@
 /*
+* Copyright (C) 2014 MediaTek Inc.
+* Modification based on code covered by the mentioned copyright
+* and/or permission notice(s).
+*/
+/*
  * Copyright (C) 2007 The Android Open Source Project
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -337,6 +342,14 @@ public class OpenSSLSocketImpl
                     getHostname());
             sslParameters.setCertificateValidation(sslNativePointer);
             sslParameters.setTlsChannelId(sslNativePointer, channelIdPrivateKey);
+            boolean enableCertificateStatusRequest = sslParameters.getEnableOCSPStapling();
+
+            // Try to enable OCSP stapling
+            if(enableCertificateStatusRequest){
+                System.out.println("Set enableCertificateStatusRequest true");
+                NativeCrypto.SSL_set_tlsext_set_certificate_request_status_enabled(
+                        sslNativePointer, true);
+            }
 
             // Temporarily use a different timeout for the handshake process
             int savedReadTimeoutMilliseconds = getSoTimeout();
@@ -407,6 +420,14 @@ public class OpenSSLSocketImpl
 
             // if not, notifyHandshakeCompletedListeners later in handshakeCompleted() callback
             if (handshakeCompleted) {
+
+                /* M: Support GBA function */
+                String cipherName = sslSession.getCipherSuite();
+                if (cipherName.length() > 0) {
+                    System.out.println("gba_cipher_suite:" + cipherName);
+                    System.setProperty("gba.ciper.suite", cipherName);
+                }
+
                 notifyHandshakeCompletedListeners();
             }
 
@@ -426,6 +447,8 @@ public class OpenSSLSocketImpl
                 }
             }
         } catch (SSLProtocolException e) {
+            ///M: Add debug info
+            System.out.println("SSLProtocolException:" + e.getMessage());
             throw (SSLHandshakeException) new SSLHandshakeException("Handshake failed")
                     .initCause(e);
         } finally {
