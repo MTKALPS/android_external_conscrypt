@@ -368,6 +368,14 @@ public class OpenSSLSocketImpl
 
             // if not, notifyHandshakeCompletedListeners later in handshakeCompleted() callback
             if (handshakeCompleted) {
+
+                /* M: Support GBA function */
+                String cipherName = sslSession.getCipherSuite();
+                if (cipherName.length() > 0) {
+                    System.out.println("gba_cipher_suite:" + cipherName);
+                    System.setProperty("gba.ciper.suite", cipherName);
+                }
+
                 notifyHandshakeCompletedListeners();
             }
 
@@ -387,6 +395,8 @@ public class OpenSSLSocketImpl
                 }
             }
         } catch (SSLProtocolException e) {
+            ///M: Add debug info
+            System.out.println("SSLProtocolException:" + e.getMessage());
             throw (SSLHandshakeException) new SSLHandshakeException("Handshake failed")
                     .initCause(e);
         } finally {

@@ -65,6 +65,22 @@ LOCAL_REQUIRED_MODULES := libjavacrypto
 LOCAL_ADDITIONAL_DEPENDENCIES := $(LOCAL_PATH)/Android.mk
 include $(BUILD_JAVA_LIBRARY)
 
+ifeq ($(strip $(BUILD_MTK_API_DEP)), yes)
+# conscrypt API table.
+# ============================================================
+LOCAL_MODULE := conscrypt-api
+
+LOCAL_JAVA_LIBRARIES += $(LOCAL_STATIC_JAVA_LIBRARIES)
+LOCAL_MODULE_CLASS := JAVA_LIBRARIES
+
+LOCAL_DROIDDOC_OPTIONS:= \
+		-api $(TARGET_OUT_COMMON_INTERMEDIATES)/PACKAGING/conscrypt-api.txt \
+		-nodocs \
+		-hidden
+
+include $(BUILD_DROIDDOC)
+endif
+
 # Create the conscrypt library without jarjar for tests
 include $(CLEAR_VARS)
 LOCAL_SRC_FILES := $(call all-java-files-under,src/main/java)
